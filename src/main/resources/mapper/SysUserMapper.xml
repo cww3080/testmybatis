@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.test.bbf.dao.SysUserMapper" >
+    <select id="getUserList" resultType="com.test.bbf.entity.SysUser" >
+        select * from SysUser
+    </select>
+    <select id="getUserByName" resultType="com.test.bbf.entity.SysUser" >
+        select * from SysUser where loginname = #{loginname,jdbcType=VARCHAR}
+    </select>
+</mapper>

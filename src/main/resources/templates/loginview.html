@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>产品添加</title>
+</head>
+<body>
+<form method="post" action="/test/test/login">
+<table>
+    <tr>
+        <th>用户名：</th>
+        <td><input name="loginname" type="text"></td>
+    </tr>
+    <tr>
+        <th>用户名：</th>
+        <td><input name="pwd" type="password"></td>
+    </tr>
+    <tr>
+        <th></th>
+        <td>
+            <input type="submit" value="登录">
+            <span style="color:red" th:text="${msg}"></span>
+        </td>
+    </tr>
+</table>
+</form>
+    添加产品：<input type="text"/>
+</body>
+</html>

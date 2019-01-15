@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>产品展示</title>
+</head>
+<body>
+    <a shiro:hasPermission="product:add" href="addproduct" target="_blank">添加新产品</a>
+    <a shiro:hasPermission="product:update" href="updateproduct" target="_blank">更新产品</a>
+    <div th:each="product : ${products}">
+        <p th:text="${product.proName}"></p>
+        <p th:text="${product.proType}"></p>
+        <p th:text="${product.proNum}"></p>
+    </div>
+</body>
+</html>
