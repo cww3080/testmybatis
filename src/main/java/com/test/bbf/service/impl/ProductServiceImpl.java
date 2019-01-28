@@ -18,7 +18,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     @Cacheable(value = "findAllProducts",key = "'product.findAll'")//表示当前方法使用缓存，并存入redis数据库中
-        //value属性：标识存入redis数据库的key
+        //value属性：标识存入redis数据库的key（测试文字）
         //key属性：用于指定方法执行返回值得key，该属性是spring用的，不写也有默认值
     public List<Product> getProductList() {
         System.out.println("从数据库中读取！");
