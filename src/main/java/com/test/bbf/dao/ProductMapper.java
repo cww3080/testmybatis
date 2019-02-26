@@ -10,4 +10,7 @@ import java.util.List;
 public interface ProductMapper {
     @Select("select * from product")
     List<Product> getProductList();
+
+    Product getProductById(String proId);
+    int updateProduct(Product product);
 }

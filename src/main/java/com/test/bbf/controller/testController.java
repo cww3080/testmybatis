@@ -1,5 +1,6 @@
 package com.test.bbf.controller;
 
+import com.test.bbf.entity.Product;
 import com.test.bbf.service.ProductService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.IncorrectCredentialsException;
@@ -9,8 +10,11 @@ import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -23,9 +27,30 @@ public class testController {
 
     @RequestMapping("productHtml")
     public String productHtml(Map<String,Object> map){
-        map.put("products",productService.getProductList());
-        System.out.println("--------------------------------------------------");
+        //map.put("products",productService.getProductList());
+        map.put("products","");
+        System.out.println("------------------------加载productHtml请求--------------------------");
         return "product/productView";
+    }
+    @RequestMapping("getAllProducts")
+    @ResponseBody()
+    public List<Product> getAllProducts(){
+        System.out.println("----------------------- 读取所有产品信息 ---------------------------");
+        List<Product> proList = productService.getProductList();
+        //System.out.println(proList);
+        return proList;
+    }
+    @RequestMapping("getProductById")
+    @ResponseBody()
+    public Product getProductById(String proId){
+        System.out.println("----------------------- 读取单个产品信息：proId="+proId+" ---------------------------");
+        return productService.getProductById(proId);
+    }
+    @RequestMapping("updateProduct")
+    @ResponseBody()
+    public int updateProduct(@RequestBody Product product){
+        System.out.println("----------------------- 修改产品信息：product="+product+" ---------------------------");
+        return productService.updateProduct(product);
     }
 
     @RequestMapping("addproduct")
