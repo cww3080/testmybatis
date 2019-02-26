@@ -3,14 +3,94 @@
 <head>
     <meta charset="UTF-8">
     <title>产品展示</title>
+    <script th:src="@{/webjars/angularjs/angular.js}"></script>
+    <script type="text/javascript">
+        var app = angular.module('myApp', []);
+
+        app.controller('myCtrl1', function($scope,$http) {
+            //保存按钮是否可见/可用
+            $scope.saveSwitch = false;
+            $scope.products = [];
+            $scope.currproduct = {proID:"111",proName:"222",proType:"333",proNum:"444"};
+
+            //根据产品ID获取单个产品信息（测试用，实际中根据业务情况可以使用初始化获取的数据）
+            $scope.getProduct = function(id) {
+                $http({
+                    url : 'getProductById?proId=' + id,
+                    method : 'POST',
+                }).then(function successCallback(result) {
+                    $scope.currproduct.proID=result.data.proID;
+                    $scope.currproduct.proName=result.data.proName;
+                    $scope.currproduct.proType=result.data.proType;
+                    $scope.currproduct.proNum=result.data.proNum;
+                    $scope.saveSwitch = true;
+                });
+            };
+            //编辑产品信息
+            $scope.updateProduct = function() {
+                $http({
+                    url : 'updateProduct',
+                    data : $scope.currproduct,
+                    method : 'POST',
+                }).then(function successCallback(result) {
+                    //修改成功！
+                    if(result.data > 0){
+                        alert("修改成功！");
+                    }
+                    else{
+                        alert("修改失败！");
+                    }
+                });
+            };
+            //初始化载入数据
+            $http({
+                url : 'getAllProducts',
+                method : 'POST'
+            }).then(function successCallback(result) {
+                //alert(JSON.stringify(result));
+                for ( var i in result.data) {
+                    var row = result.data[i];
+                    $scope.products.push(row);
+                }
+            }, function errorCallback(response) {
+                // 请求失败执行代码
+                alert("请求失败！");
+            });
+        });
+    </script>
 </head>
-<body>
+<body ng-app="myApp"  ng-controller="myCtrl1">
+    <form id="" method="post">
+        <table>
+            <tr>
+                <th>产品ID：</th>
+                <td><input type="text" ng-model="currproduct.proID"></td>
+            </tr>
+            <tr>
+                <th>名称：</th>
+                <td><input type="text" ng-model="currproduct.proName"></td>
+            </tr>
+            <tr>
+                <th>类型：</th>
+                <td><input type="text" ng-model="currproduct.proType"></td>
+            </tr>
+            <tr>
+                <th>数量：</th>
+                <td><input type="text" ng-model="currproduct.proNum"></td>
+            </tr>
+            <tr ng-show="saveSwitch">
+                <th></th>
+                <td><input type="button" ng-disabled="!saveSwitch" value="保存" ng-click="updateProduct()"></td>
+            </tr>
+        </table>
+    </form>
     <a shiro:hasPermission="product:add" href="addproduct" target="_blank">添加新产品</a>
     <a shiro:hasPermission="product:update" href="updateproduct" target="_blank">更新产品</a>
-    <div th:each="product : ${products}">
-        <p th:text="${product.proName}"></p>
-        <p th:text="${product.proType}"></p>
-        <p th:text="${product.proNum}"></p>
+    <div ng-repeat="pro in products" style="border:1px solid red;margin:10px">
+        <p>名称：{{pro.proName}}</p>
+        <p>类型：{{pro.proType}}</p>
+        <p>数量：{{pro.proNum}}</p>
+        <a href="javacript:void(0);" ng-click="getProduct(pro.proID)">编辑</a>
     </div>
 </body>
 </html>
